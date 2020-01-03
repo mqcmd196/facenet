@@ -1,0 +1,1 @@
+python3 src/classifier.py CLASSIFY test_data ./model/20180402-114759/20180402-114759.pb ./model/my_test.pkl --batch_size 1000

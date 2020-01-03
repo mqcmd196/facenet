@@ -92,3 +92,7 @@ ENV/
 
 # PyCharm project setting
 .idea
+
+# VideoClassifier
+src/train_data/
+src/test_data/

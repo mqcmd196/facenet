@@ -239,8 +239,9 @@ def to_rgb(img):
     ret = np.empty((w, h, 3), dtype=np.uint8)
     ret[:, :, 0] = ret[:, :, 1] = ret[:, :, 2] = img
     return ret
-  
+
 def load_data(image_paths, do_random_crop, do_random_flip, image_size, do_prewhiten=True):
+    # 複数枚の画像一つの配列に突っ込んでるだけ
     nrof_samples = len(image_paths)
     images = np.zeros((nrof_samples, image_size, image_size, 3))
     for i in range(nrof_samples):
