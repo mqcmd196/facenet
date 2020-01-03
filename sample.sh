@@ -1,0 +1,1 @@
+python3 src/videosample.py model/20180402-114759/20180402-114759.pb test_data/Yoshiki_Obinata/Yoshiki_Obinata0001.jpg

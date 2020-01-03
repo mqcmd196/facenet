@@ -117,9 +117,9 @@ def main(args):
                                                         (v_bb[i][2], v_bb[i][3]), (0, 0, 255), 2)
                         else:
                             print('', end='')
-                    else:  #顔非検出の場合
-                        print('  Alignment Failure', end='')
-                    print('')
+                else:  #顔非検出の場合
+                    print('  Alignment Failure', end='')
+                print('')
 
                 #frame_num表示
                 cv2.putText(frame, str(frame_num), (3,30), cv2.FONT_HERSHEY_SIMPLEX,
@@ -142,7 +142,7 @@ def main(args):
                 if cv2.waitKey(1) & 0xFF == ord('q'):
                     break
 
-                video_capture.release()
+                # video_capture.release()
             cv2.destroyAllWindows()
 
 def load_and_align_data(image_paths, nrof_images,pnet, rnet, onet, args):
@@ -195,15 +195,16 @@ def cal_distance(emb_reg, emb_video, nrof_images):
 
 
 def parse_arguments(argv):
-  parser = argparse.ArgumentParser()
-  parser.add_argument('model', type=str, 
-    help='Could be either a directory containing the meta_file and ckpt_file or a model protobuf (.pb) file')
-# parser.add_argument('image_files', type=str, nargs='+', help='Images to compare')
-  parser.add_argument('reg_paths', type=str, help='The path of registered human faces')
-  parser.add_argument('--image_size', type=int,
-    help='Image size (height, width) in pixels.', default=160)
-  parser.add_argument('--margin', type=int,
+    parser = argparse.ArgumentParser()
+    parser.add_argument('model', type=str, 
+        help='Could be either a directory containing the meta_file and ckpt_file or a model protobuf (.pb) file')
+    # parser.add_argument('image_files', type=str, nargs='+', help='Images to compare')
+    parser.add_argument('reg_paths', type=str, help='The path of registered human faces')
+    parser.add_argument('--image_size', type=int, help='Image size (height, width) in pixels.', default=160)
+    parser.add_argument('--margin', type=int,
     help='Margin for the crop around the bounding box (height, width) in pixels.', default=44)
-  parser.add_argument('--gpu_memory_fraction', type=float,
-    help='Upper bound on the amount of GPU memory that will be used by the process.', default=1.0)
-  return parser.parse_args(argv)
+    parser.add_argument('--gpu_memory_fraction', type=float, help='Upper bound on the amount of GPU memory that will be used by the process.', default=1.0)
+    return parser.parse_args(argv)
+
+if __name__ == '__main__':
+    main(parse_arguments(sys.argv[1:]))
