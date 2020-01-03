@@ -94,5 +94,5 @@ ENV/
 .idea
 
 # VideoClassifier
-src/train_data/
-src/test_data/
+/src/train_data/
+/src/test_data/
