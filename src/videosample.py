@@ -56,7 +56,7 @@ def main(args):
 
             #fps計算 初期化
             frame_num = 1
-            accum_time =0
+            accum_time = 0
             curr_fps = 0
             prev_time = timer()
             fps = "FPS: ??"
@@ -158,9 +158,9 @@ def load_and_align_data(image_paths, nrof_images,pnet, rnet, onet, args):
         det = np.squeeze(bounding_boxes[0,0:4]) #顔の検出ポイント
         cropped = cropped_face(det, img, img_size, args)
         img_list.append(cropped)
-    if nrof_images > 1 :
+    if nrof_images > 1:
         images = np.stack(img_list) # 登録済み画像から顔のみ抽出したリスト
-    else :
+    else:
         images = img_list
     return images
 
