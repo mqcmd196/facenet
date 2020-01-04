@@ -19,7 +19,7 @@ minsize = 20  # minimum size of face
 fd_threshold = [ 0.6, 0.7, 0.7 ]  # three steps's threshold
 factor = 0.709  # scale factor
 input_image_size = 160
-fr_threshold = 1.2
+fr_threshold = 0.8 # 認識のしきい値
 
 def main(args):
     margin = args.margin
