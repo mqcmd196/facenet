@@ -15,16 +15,34 @@ import facenet
 import align.detect_face
 from timeit import default_timer as timer
 
-# rosl
+# rospackage
+import rospy
+from std_msgs.msg import Bool
 
 minsize = 20  # minimum size of face
 fd_threshold = [ 0.6, 0.7, 0.7 ]  # three steps's threshold
 factor = 0.709  # scale factor
 input_image_size = 160
 fr_threshold = 0.8 # 認識のしきい値
+# rospyrate = 2 # publishのHz
+
+# initialize rosnode
+class ROSFaceClassification:
+    detected = False
+    pub = None
+    rate = None
+
+    def __init__(self):
+        rospy.init_node('detect_registered_person')
+        self.pub = rospy.Publisher('/boolean', Bool, queue_size=1)
+
+    def publish(self, boolmsg):
+        self.pub.publish(boolmsg)
 
 def main(args):
     margin = args.margin
+    obj = ROSFaceClassification()
+
     with tf.Graph().as_default():
         #gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=args.gpu_memory_fraction)
         gpu_options = tf.GPUOptions(allow_growth=True) # GPUのメモリ割り当て方法を変更
@@ -116,12 +134,15 @@ def main(args):
                             text_x = v_bb[i][0]
                             text_y = v_bb[i][3] + 20
                             print('Find registered person', end='')
+                            obj.publish(True)
                             cv2.rectangle(frame, (v_bb[i][0], v_bb[i][1]), 
                                                         (v_bb[i][2], v_bb[i][3]), (0, 0, 255), 2)
                         else:
                             print('', end='')
+                            obj.publish(False)
                 else:  #顔非検出の場合
                     print('  Alignment Failure', end='')
+                    obj.publish(False)
                 print('')
 
                 #frame_num表示
