@@ -34,7 +34,7 @@ class ROSFaceClassification:
 
     def __init__(self):
         rospy.init_node('detect_registered_person')
-        self.pub = rospy.Publisher('/boolean', Bool, queue_size=1)
+        self.pub = rospy.Publisher('/faceclassifier/boolean', Bool, queue_size=1)
 
     def publish(self, boolmsg):
         self.pub.publish(boolmsg)
@@ -72,6 +72,7 @@ def main(args):
 
             # カメラ映像/動画ファイルの取得
             video_capture = cv2.VideoCapture(0) # camera input
+            video_capture.set(cv2.CAP_PROP_FPS, 3)
             print('Start Recognition')
 
             #fps計算 初期化
@@ -81,7 +82,7 @@ def main(args):
             prev_time = timer()
             fps = "FPS: ??"
 
-            while True:
+            while not rospy.is_shutdown():
                 ret, frame = video_capture.read()
                 if ret == False:
                     break
