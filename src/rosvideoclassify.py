@@ -17,24 +17,24 @@ from timeit import default_timer as timer
 
 # rospackage
 import rospy
-from std_msgs.msg import Bool
+from std_msgs.msg import String
 
 minsize = 20  # minimum size of face
 fd_threshold = [ 0.6, 0.7, 0.7 ]  # three steps's threshold
 factor = 0.709  # scale factor
 input_image_size = 160
 fr_threshold = 0.8 # 認識のしきい値
-# rospyrate = 2 # publishのHz
+rospyrate = 2 # publishのHz
 
 # initialize rosnode
 class ROSFaceClassification:
     detected = False
     pub = None
-    rate = None
 
-    def __init__(self):
+    def __init__(self, rate = rospyrate):
         rospy.init_node('detect_registered_person')
-        self.pub = rospy.Publisher('/faceclassifier/boolean', Bool, queue_size=1)
+        self.pub = rospy.Publisher('/faceclassifier/string', String, queue_size=1)
+        self.rate = rospy.Rate(rate)
 
     def publish(self, boolmsg):
         self.pub.publish(boolmsg)
@@ -135,16 +135,17 @@ def main(args):
                             text_x = v_bb[i][0]
                             text_y = v_bb[i][3] + 20
                             print('Find registered person', end='')
-                            obj.publish(True)
+                            obj.publish('owner')
                             cv2.rectangle(frame, (v_bb[i][0], v_bb[i][1]), 
                                                         (v_bb[i][2], v_bb[i][3]), (0, 0, 255), 2)
                         else:
                             print('', end='')
-                            obj.publish(False)
+                            obj.publish('face')
                 else:  #顔非検出の場合
                     print('  Alignment Failure', end='')
-                    obj.publish(False)
+                    obj.publish('none')
                 print('')
+                obj.rate.sleep()
 
                 #frame_num表示
                 cv2.putText(frame, str(frame_num), (3,30), cv2.FONT_HERSHEY_SIMPLEX,
